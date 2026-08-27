@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLoader — Video Downloader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <main class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-xl-9 col-lg-10">
+                <section class="card shadow-sm hero-card">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <span class="brand-icon"><i class="fa-solid fa-circle-down"></i></span>
+                            <h1 class="mt-3 mb-2">VLoader</h1>
+                            <p class="text-muted mb-0">Download the best available video, or inspect the page and choose a quality.</p>
+                        </div>
+
+                        <div id="notice-container" class="alert d-none" role="alert">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span id="notice-message"></span>
+                        </div>
+
+                        <form id="download-form">
+                            <label for="video-url" class="form-label fw-semibold">Video page URL</label>
+                            <div class="input-group input-group-lg mb-4">
+                                <span class="input-group-text"><i class="fa-solid fa-link"></i></span>
+                                <input type="url" id="video-url" class="form-control" placeholder="https://example.com/video" required>
+                            </div>
+
+                            <div class="row g-3 align-items-end">
+                                <div class="col-md-4">
+                                    <label for="quality-mode" class="form-label fw-semibold">Quality</label>
+                                    <select id="quality-mode" class="form-select">
+                                        <option value="auto" selected>Auto — best available</option>
+                                        <option value="manual">Choose a quality</option>
+                                    </select>
+                                </div>
+                                <div id="manual-quality-controls" class="col-md-4 d-none">
+                                    <label for="quality-select" class="form-label fw-semibold">Available quality</label>
+                                    <div class="input-group">
+                                        <select id="quality-select" class="form-select" disabled>
+                                            <option value="">Fetch qualities first</option>
+                                        </select>
+                                        <button id="fetch-formats-btn" class="btn btn-outline-secondary" type="button" title="Fetch available qualities">
+                                            <i class="fa-solid fa-rotate"></i>
+                                            <span class="visually-hidden">Fetch available qualities</span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="file-format-select" class="form-label fw-semibold">File format</label>
+                                    <select id="file-format-select" class="form-select">
+                                        <option value="mp4" selected>MP4 — recommended</option>
+                                        <option value="mov">MOV — Apple compatible</option>
+                                        <option value="webm">WebM — browser compatible</option>
+                                        <option value="mkv">MKV — VLC / IINA</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div id="format-summary" class="format-summary d-none mt-3" aria-live="polite"></div>
+
+                            <button id="download-btn" class="btn btn-primary btn-lg w-100 mt-4" type="submit">
+                                <i class="fa-solid fa-download me-2"></i>Download video
+                            </button>
+                            <p class="small text-muted text-center mt-3 mb-0">Only download media you have permission to save. DRM-protected streams are not supported.</p>
+                        </form>
+                    </div>
+                </section>
+
+                <section class="card mt-4 shadow-sm">
+                    <div class="card-header bg-white">
+                        <h2 class="h5 mb-0">Active downloads</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="active-downloads" class="active-downloads-container">
+                            <p class="empty-state text-muted text-center mb-0">No active downloads</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card mt-4 shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                        <h2 class="h5 mb-0">Download history</h2>
+                        <span id="history-count" class="badge bg-primary">0</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="download-history" class="row g-3"></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

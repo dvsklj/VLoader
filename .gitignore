@@ -1,25 +1,33 @@
-# Byte-compiled / optimized / DLL files
+# Python
 __pycache__/
 *.py[cod]
-*$py.class
-
-# Distribution / packaging
-dist/
-build/
 *.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
 
-# Virtual environments
+# Environments
+.venv/
 venv/
 env/
 ENV/
 
-# IDE settings
-.vscode/
-.idea/
+# Build output
+build/
+dist/
 
-# Application specific
-download_history.json
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+
+# Runtime downloads and temporary media
 downloads/
-*.mp4
-*.webm
-*.mkv
+*.part
+*.ytdl
+*.temp.*
+*.vloader-temp.*
+
+# Local configuration
+.env
+.env.*
